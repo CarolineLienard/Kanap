@@ -1,8 +1,12 @@
+let product = []
 let baseUrl = (window.location).href
 let productID = baseUrl.substring(baseUrl.lastIndexOf('=') + 1)
+let myCart = JSON.parse(localStorage.getItem("product"))
+
 fetch(`http://localhost:3000/api/products/${productID}`)
 .then(data => data.json())
 .then(res => {
+    product = res
     const imageContainer = document.getElementById("item__img")
     const productImage = document.createElement("img")
     imageContainer.appendChild(productImage)
@@ -27,21 +31,22 @@ fetch(`http://localhost:3000/api/products/${productID}`)
 })
 
 function addProduct () {
-    const productQuantity = document.getElementById("quantity").value
-    const productColor = document.getElementById("colors").value
-    const productPrice = document.getElementById("price").innerHTML
-    const productName = document.getElementById("title").innerHTML
 
-    let addProduct = [
-        {
+    let obj = {
         id : productID,
-        name : productName,
-        quantity : productQuantity,
-        color : productColor,
-        price : productPrice,    
+        name : product.name,
+        quantity : document.getElementById("quantity").value,
+        color : document.getElementById("colors").value,
+        price : product.price,  
+        image : product.imageUrl
         }
-    ]
 
-    localStorage.setItem("product", JSON.stringify(addProduct))
-    alert("Produit ajouté au panier")
+    if(myCart){
+        let addNewCard = [...myCart, obj]
+        localStorage.setItem("product", JSON.stringify(addNewCard))
+
+    } else{
+        localStorage.setItem("product", JSON.stringify([obj]))
+    }
+
 }
