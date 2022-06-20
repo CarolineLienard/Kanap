@@ -1,7 +1,7 @@
 let product = []
 let baseUrl = (window.location).href
 let productID = baseUrl.substring(baseUrl.lastIndexOf('=') + 1)
-let myCart = JSON.parse(localStorage.getItem("product"))
+let myCart = JSON.parse(localStorage.getItem("product")) || []
 
 fetch(`http://localhost:3000/api/products/${productID}`)
 .then(data => data.json())
@@ -39,14 +39,12 @@ function addProduct () {
         color : document.getElementById("colors").value,
         price : product.price,  
         image : product.imageUrl
-        }
+    }
 
     if(myCart){
         let addNewCard = [...myCart, obj]
         localStorage.setItem("product", JSON.stringify(addNewCard))
-
     } else{
         localStorage.setItem("product", JSON.stringify([obj]))
     }
-
-}
+}        
