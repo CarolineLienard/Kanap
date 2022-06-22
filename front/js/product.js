@@ -1,7 +1,6 @@
 let product = []
 let baseUrl = (window.location).href
 let productID = baseUrl.substring(baseUrl.lastIndexOf('=') + 1)
-let myCart = JSON.parse(localStorage.getItem("product")) || []
 
 fetch(`http://localhost:3000/api/products/${productID}`)
 .then(data => data.json())
@@ -31,20 +30,24 @@ fetch(`http://localhost:3000/api/products/${productID}`)
 })
 
 function addProduct () {
+    let quantity = document.getElementById("quantity").value
+    let color =  document.getElementById("colors").value
+
+    console.log(typeof quantity)
 
     let obj = {
         id : productID,
-        name : product.name,
-        quantity : document.getElementById("quantity").value,
         color : document.getElementById("colors").value,
-        price : product.price,  
-        image : product.imageUrl
     }
 
-    if(myCart){
-        let addNewCard = [...myCart, obj]
-        localStorage.setItem("product", JSON.stringify(addNewCard))
-    } else{
-        localStorage.setItem("product", JSON.stringify([obj]))
+    if ( quantity == 0 || color == "choose") {
+        alert("Veuillez choisir une quantité et une couleur")
+    }
+    else {
+        for( let i = 0; i < parseInt(quantity); i++) {
+            let myCart = JSON.parse(localStorage.getItem("product")) || []
+            let addNewCard = myCart.length === 0 ? [obj] : [...myCart, obj] /* ? = if et : = else, ... = copie le tableau existant et lui ajoute un nouvel objet */
+            localStorage.setItem("product", JSON.stringify(addNewCard))            
+        }
     }
 }        
