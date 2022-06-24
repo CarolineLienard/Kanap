@@ -33,21 +33,29 @@ function addProduct () {
     let quantity = document.getElementById("quantity").value
     let color =  document.getElementById("colors").value
 
-    console.log(typeof quantity)
-
-    let obj = {
+    let newProduct = {
         id : productID,
-        color : document.getElementById("colors").value,
+        color : color,
+        quantity : quantity
     }
 
     if ( quantity == 0 || color == "choose") {
         alert("Veuillez choisir une quantité et une couleur")
     }
     else {
-        for( let i = 0; i < parseInt(quantity); i++) {
-            let myCart = JSON.parse(localStorage.getItem("product")) || []
-            let addNewCard = myCart.length === 0 ? [obj] : [...myCart, obj] /* ? = if et : = else, ... = copie le tableau existant et lui ajoute un nouvel objet */
-            localStorage.setItem("product", JSON.stringify(addNewCard))            
+        let myCart = JSON.parse(localStorage.getItem("product")) || []
+        const elementsIndex = myCart.findIndex( element => element.id == productID && element.color == color )
+
+        if(elementsIndex === -1){ /* si il retourne -1 c'est que l'objet n'existe pas */ 
+            let addNewCard = [...myCart, newProduct] /* ? = if et : = else, ... = copie le tableau existant et lui ajoute un nouvel objet */
+            localStorage.setItem("product", JSON.stringify(addNewCard))
+            
+        }else{
+            let newArray = [...myCart]
+            newArray[elementsIndex] = {...newArray[elementsIndex], quantity: parseInt(newArray[elementsIndex].quantity) + parseInt(quantity) } /** parseInt = transforme une string en integer */
+            localStorage.setItem("product", JSON.stringify(newArray))
+
         }
+        window.location.replace("/front/html/cart.html")
     }
-}        
+} 

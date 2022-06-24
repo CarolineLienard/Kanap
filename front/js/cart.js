@@ -1,17 +1,17 @@
 const myCart = JSON.parse(localStorage.getItem("product"))
 const cart = document.getElementById("cart__items")
+let totalPriceObj = 0
+let totalQuantityObj = 0
 
 for ( let info of myCart ) {
     const productID = info.id
-    
+
     fetch(`http://localhost:3000/api/products/${productID}`)
     .then(data => data.json())
     .then(res => {
         const productName = res.name
         const productImage = res.imageUrl
         const productPrice = res.price
-
-        console.log(res);
 
         const cartContainer = document.createElement("article")
         cartContainer.classList.add("cart__item")
@@ -68,11 +68,24 @@ for ( let info of myCart ) {
 
         const deteled = document.createElement("div")
         deteled.classList.add("cart__item__content__settings__delete")
+        deteled.addEventListener('click', () => deleteProduct(productID))
         contentSettings.appendChild(deteled)
 
         const deteledButton = document.createElement("p")
         deteledButton.classList.add("deleteItem")
         deteledButton.innerHTML = "Supprimer"
         deteled.appendChild(deteledButton)
+
+        totalPriceObj = totalPriceObj + (parseInt(productPrice) * parseInt(info.quantity))
+        totalQuantityObj = totalQuantityObj + parseInt(info.quantity)
+        const totalPrice = document.getElementById("totalPrice")
+        const totalQuantity = document.getElementById("totalQuantity")
+        totalQuantity.innerHTML = totalQuantityObj
+        totalPrice.innerHTML = totalPriceObj
     }) 
 }
+
+function deleteProduct(id){
+    alert(id)
+}
+
