@@ -2,6 +2,7 @@ const myCart = JSON.parse(localStorage.getItem("product"))
 const cart = document.getElementById("cart__items")
 let totalPriceObj = 0
 let totalQuantityObj = 0
+let products = []
 
 for ( let info of myCart ) {
     const productID = info.id
@@ -12,6 +13,7 @@ for ( let info of myCart ) {
         const productName = res.name
         const productImage = res.imageUrl
         const productPrice = res.price
+        products.push(productID)
 
         const cartContainer = document.createElement("article")
         cartContainer.classList.add("cart__item")
@@ -83,6 +85,9 @@ for ( let info of myCart ) {
         const totalQuantity = document.getElementById("totalQuantity")
         totalQuantity.innerHTML = totalQuantityObj
         totalPrice.innerHTML = totalPriceObj
+
+        const orderButton = document.getElementById("order")
+        orderButton.addEventListener("click", sendForm)
     }) 
 }
 
@@ -102,3 +107,35 @@ function deleteProduct(id, color){
     location.reload()
 }
 
+function sendForm () {
+    let contact = { 
+        firstName : document.getElementById("firstName").value,
+        lastName :  document.getElementById("lastName").value,
+        address : document.getElementById("address").value,
+        city : document.getElementById("city").value,
+        email : document.getElementById("email").value
+    }
+
+    fetch(`http://localhost:3000/api/products/order`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            contact: {
+                firstName : document.getElementById("firstName").value,
+                lastName :  document.getElementById("lastName").value,
+                address : document.getElementById("address").value,
+                city : document.getElementById("city").value,
+                email : document.getElementById("email").value
+            },
+            products : products
+        })
+    })
+    .then(data => data.json())
+    .then(res => {
+        alert(JSON.stringify(res))
+        window.location.replace(`./confirmation.html?orderId=${res.orderId}`)
+    })
+}

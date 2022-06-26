@@ -27,6 +27,9 @@ fetch(`http://localhost:3000/api/products/${productID}`)
         productColor.innerHTML = colors
         productColor.setAttribute( "value", colors )
     }
+
+    const addButton = document.getElementById("addToCart")
+    addButton.addEventListener("click", addProduct)
 })
 
 function addProduct () {
@@ -36,7 +39,7 @@ function addProduct () {
     let newProduct = {
         id : productID,
         color : color,
-        quantity : quantity
+        quantity : quantity,
     }
 
     if ( quantity == 0 || color == "choose") {
@@ -45,6 +48,7 @@ function addProduct () {
     else {
         let myCart = JSON.parse(localStorage.getItem("product")) || []
         const elementsIndex = myCart.findIndex( element => element.id == productID && element.color == color )
+        alert("Produit ajouté au panier")
 
         if(elementsIndex === -1){ /* si il retourne -1 c'est que l'objet n'existe pas */ 
             let addNewCard = [...myCart, newProduct] /* ? = if et : = else, ... = copie le tableau existant et lui ajoute un nouvel objet */
@@ -62,4 +66,4 @@ function addProduct () {
 
         }
     }
-} 
+}
