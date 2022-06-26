@@ -10,6 +10,7 @@ fetch(`http://localhost:3000/api/products/${productID}`)
     const productImage = document.createElement("img")
     imageContainer.appendChild(productImage)
     productImage.src = res.imageUrl
+    productImage.alt = res.altTxt
 
     const imageTitle = document.getElementById("title")
     imageTitle.innerHTML = res.name

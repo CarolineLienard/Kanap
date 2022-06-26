@@ -14,6 +14,7 @@ fetch("http://localhost:3000/api/products")
           const productImage = document.createElement("img")
           article.appendChild(productImage)
           productImage.src = info.imageUrl
+          productImage.alt = info.altTxt
 
           const title = document.createElement("h3")
           title.classList.add("productName")

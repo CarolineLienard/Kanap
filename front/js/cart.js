@@ -25,6 +25,7 @@ for ( let info of myCart ) {
 
         const image = document.createElement("img")
         image.src = productImage
+        image.alt = res.altTxt
         imageContainer.appendChild(image)
 
         const content = document.createElement("div")
