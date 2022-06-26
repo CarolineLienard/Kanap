@@ -53,9 +53,13 @@ function addProduct () {
         }else{
             let newArray = [...myCart]
             newArray[elementsIndex] = {...newArray[elementsIndex], quantity: parseInt(newArray[elementsIndex].quantity) + parseInt(quantity) } /** parseInt = transforme une string en integer */
+            if(newArray[elementsIndex].quantity > 100){
+                newArray[elementsIndex] = {...newArray[elementsIndex], quantity: 100} /** parseInt = transforme une string en integer */
+                alert("Quantité de canapé maximale atteinte")
+
+            }
             localStorage.setItem("product", JSON.stringify(newArray))
 
         }
-        window.location.replace("/front/html/cart.html")
     }
 } 

@@ -58,6 +58,7 @@ for ( let info of myCart ) {
         qty.innerHTML = "Qté:"
 
         const qtyInput = document.createElement("input")
+        qtyInput.addEventListener("change", (e) => handleChange(e, productID, info.color))
         qtyInput.type = "number"
         qtyInput.classList.add("itemQuantity")
         qtyInput.value = info.quantity
@@ -68,7 +69,7 @@ for ( let info of myCart ) {
 
         const deteled = document.createElement("div")
         deteled.classList.add("cart__item__content__settings__delete")
-        deteled.addEventListener('click', () => deleteProduct(productID))
+        deteled.addEventListener('click', () => deleteProduct(productID, info.color))
         contentSettings.appendChild(deteled)
 
         const deteledButton = document.createElement("p")
@@ -85,7 +86,19 @@ for ( let info of myCart ) {
     }) 
 }
 
-function deleteProduct(id){
-    alert(id)
+function handleChange (e, id, color) {
+    const elementsIndex = myCart.findIndex( element => element.id == id && element.color == color )
+    myCart[elementsIndex] = {...myCart[elementsIndex], quantity: e.target.value } 
+    localStorage.setItem("product", JSON.stringify(myCart))
+    alert("Quantité mise à jour")
+    location.reload()
+}
+
+function deleteProduct(id, color){
+    const elementsIndex = myCart.findIndex( element => element.id == id && element.color == color )
+    alert("Produit supprimé");
+    myCart.splice(elementsIndex, 1);
+    localStorage.setItem("product", JSON.stringify(myCart))
+    location.reload()
 }
 
