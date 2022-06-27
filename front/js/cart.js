@@ -148,18 +148,69 @@ function deleteProduct(id, color){
     location.reload()
 }
 
-// Add regex 
-let orderForm = document.querySelector(".cart__order__form");
+//// REGEXs
+// no regex for addresses, "required" attribute speaks for himself
+// variables values for the form :
+const prenom = document.getElementById("firstName");
+const nom = document.getElementById("lastName");
+const ville = document.getElementById("city");
+const adresse = document.getElementById("address");
+const mail = document.getElementById("email");
 
-// Create regex 
-let emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
-let charRegex = new RegExp("^[a-zA-Z ,.'-]+$");
-let addressRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+// email
+const emailErrorMsg = document.getElementById("emailErrorMsg");
+function validateEmail(mail) {
+  const regexMail = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
+  if (regexMail.test(mail) == false) {
+    return false;
+  } else {
+    emailErrorMsg.innerHTML = null;
+    return true;
+  }
+}
+// simple RegEx for names : accepted characters by RegEx
 
+const regexName = /^[a-z][a-z '-.,]{1,31}$|^$/i;
+
+// first name
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+function validateFirstName(prenom) {
+  if (regexName.test(prenom) == false) {
+    return false;
+  } else {
+    firstNameErrorMsg.innerHTML = null;
+    return true;
+  }
+}
+
+// last name
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+function validateLastName(nom) {
+  if (regexName.test(nom) == false) {
+    return false;
+  } else {
+    lastNameErrorMsg.innerHTML = null;
+    return true;
+  }
+}
+
+// city
+const cityErrorMsg = document.getElementById("cityErrorMsg");
+function validateCity(ville) {
+  if (regexName.test(ville) == false) {
+    return false;
+  } else {
+    cityErrorMsg.innerHTML = null;
+    return true;
+  }
+}
 
 // Send the form and place the order
 function sendForm () {
-    fetch(`http://localhost:3000/api/products/order`, {
+    if (myCart === null || myCart == 0) {
+        alert("Veuillez ajouter des produits")
+    } else { 
+        fetch(`http://localhost:3000/api/products/order`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -179,19 +230,20 @@ function sendForm () {
             // Sending the productsID array as the variable "products" 
             products : productsID
         })
-    })
-    .then(data => data.json())
-    .then(res => {
-        
-        // Clear and set the order ID in the local storage
-        localStorage.clear()
-        localStorage.setItem("orderId", res.orderId);
+        })
+        .then(data => data.json())
+        .then(res => {
 
-        // Alert message and redirect to the confirmation page
-        alert("Commande effectuée")
-        window.location.replace(`./confirmation.html?orderId=${res.orderId}`)
-    })
-    .catch((err) => {
-        alert (err.message)
-    })
+                // Clear and set the order ID in the local storage
+                localStorage.clear()
+                localStorage.setItem("orderId", res.orderId);
+
+                // Alert message and redirect to the confirmation page
+                alert("Commande effectuée")
+                window.location.replace(`./confirmation.html?orderId=${res.orderId}`)
+        })
+        .catch((err) => {
+            alert (err.message)
+        })
+    }
 }
