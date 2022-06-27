@@ -148,7 +148,6 @@ function deleteProduct(id, color){
     location.reload()
 }
 
-// Regex form
 // Add regex 
 let orderForm = document.querySelector(".cart__order__form");
 
@@ -196,4 +195,3 @@ function sendForm () {
         alert (err.message)
     })
 }
-
