@@ -1,5 +1,5 @@
 // Local storage init
-const myCart = JSON.parse(localStorage.getItem("product"))
+const myCart = JSON.parse(localStorage.getItem("products"))
 
 // Main variables
 const cart = document.getElementById("cart__items")
@@ -8,10 +8,11 @@ let totalPriceObj = 0
 let totalQuantityObj = 0
 
 // Adding products from the local storage
-if (myCart === null || myCart == 0) {
+if (myCart === null || myCart.length == 0) {
     const emptyCart = document.createElement("p")
     emptyCart.innerHTML = "Votre panier est vide" 
     cart.appendChild(emptyCart)
+    document.getElementById("cart__order").style.display="none"
 } else {
 for ( let info of myCart ) {
     const productID = info.id
@@ -126,7 +127,7 @@ function handleChange (e, id, color) {
     
     // Copying the element index, updating the quantity and put it in the local storage
     myCart[elementsIndex] = {...myCart[elementsIndex], quantity: e.target.value } 
-    localStorage.setItem("product", JSON.stringify(myCart))
+    localStorage.setItem("products", JSON.stringify(myCart))
     
     // Alert message and page reload
     alert("Quantité mise à jour")
@@ -141,109 +142,56 @@ function deleteProduct(id, color){
     
     // Deleted the element and update the local storage
     myCart.splice(elementsIndex, 1);
-    localStorage.setItem("product", JSON.stringify(myCart))
+    localStorage.setItem("products", JSON.stringify(myCart))
 
     // Alert message and page reload
     alert("Produit supprimé");
     location.reload()
 }
 
-//// REGEXs
-// no regex for addresses, "required" attribute speaks for himself
-// variables values for the form :
-const prenom = document.getElementById("firstName");
-const nom = document.getElementById("lastName");
-const ville = document.getElementById("city");
-const adresse = document.getElementById("address");
-const mail = document.getElementById("email");
-
-// email
-const emailErrorMsg = document.getElementById("emailErrorMsg");
-function validateEmail(mail) {
-  const regexMail = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/
-  if (regexMail.test(mail) == false) {
-    return false;
-  } else {
-    emailErrorMsg.innerHTML = null;
-    return true;
-  }
-}
-// simple RegEx for names : accepted characters by RegEx
-
-const regexName = /^[a-z][a-z '-.,]{1,31}$|^$/i;
-
-// first name
-const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-function validateFirstName(prenom) {
-  if (regexName.test(prenom) == false) {
-    return false;
-  } else {
-    firstNameErrorMsg.innerHTML = null;
-    return true;
-  }
-}
-
-// last name
-const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-function validateLastName(nom) {
-  if (regexName.test(nom) == false) {
-    return false;
-  } else {
-    lastNameErrorMsg.innerHTML = null;
-    return true;
-  }
-}
-
-// city
-const cityErrorMsg = document.getElementById("cityErrorMsg");
-function validateCity(ville) {
-  if (regexName.test(ville) == false) {
-    return false;
-  } else {
-    cityErrorMsg.innerHTML = null;
-    return true;
-  }
-}
-
 // Send the form and place the order
 function sendForm () {
-    if (myCart === null || myCart == 0) {
-        alert("Veuillez ajouter des produits")
-    } else { 
+    const firstName = document.getElementById("firstName").value
+    const lastName =  document.getElementById("lastName").value
+    const address = document.getElementById("address").value
+    const city = document.getElementById("city").value
+    const email = document.getElementById("email").value
+
+    if(firstName !== '' && lastName !== '' && address !== '' && city !== '' && email !== ''){
         fetch(`http://localhost:3000/api/products/order`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-
-            // Create the contact object with the form information
-            contact: {
-                firstName : document.getElementById("firstName").value,
-                lastName :  document.getElementById("lastName").value,
-                address : document.getElementById("address").value,
-                city : document.getElementById("city").value,
-                email : document.getElementById("email").value
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-
-            // Sending the productsID array as the variable "products" 
-            products : productsID
-        })
-        })
-        .then(data => data.json())
-        .then(res => {
-
-                // Clear and set the order ID in the local storage
-                localStorage.clear()
-                localStorage.setItem("orderId", res.orderId);
-
-                // Alert message and redirect to the confirmation page
-                alert("Commande effectuée")
-                window.location.replace(`./confirmation.html?orderId=${res.orderId}`)
-        })
-        .catch((err) => {
-            alert (err.message)
-        })
+            body: JSON.stringify({
+        
+                // Create the contact object with the form information
+                contact: {
+                    firstName : firstName,
+                    lastName :  lastName,
+                    address : address,
+                    city : city,
+                    email : email
+                },
+        
+                // Sending the productsID array as the variable "products" 
+                products : productsID
+            })
+            })
+            .then(data => data.json())
+            .then(res => {
+        
+                    // Clear and set the order ID in the local storage
+                    localStorage.clear()
+                    localStorage.setItem("orderId", res.orderId);
+        
+                    // Alert message and redirect to the confirmation page
+                    alert("Commande effectuée")
+                    window.location.replace(`./confirmation.html?orderId=${res.orderId}`)
+            })
+            .catch((err) => {
+                alert (err.message)
+            })
     }
 }

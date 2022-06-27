@@ -64,7 +64,7 @@ function addProduct () {
     else {
 
         // Set myCart as an array of all the product object, it can be an empty array
-        let myCart = JSON.parse(localStorage.getItem("product")) || []
+        let myCart = JSON.parse(localStorage.getItem("products")) || []
 
         // Create a variable elementsIndex, the index of the element with the same color and id, in myCart
         const elementsIndex = myCart.findIndex( element => element.id == productID && element.color == color )
@@ -78,7 +78,7 @@ function addProduct () {
             let myCardNew = [...myCart, product]
 
             // Set the new array with the new object in it, in the local storage
-            localStorage.setItem("product", JSON.stringify(myCardNew))
+            localStorage.setItem("products", JSON.stringify(myCardNew))
             
         } else{ // the same color and id
 
@@ -99,7 +99,7 @@ function addProduct () {
             }
 
             // Set myCartAdjust in the local storage
-            localStorage.setItem("product", JSON.stringify(myCartAdjust))
+            localStorage.setItem("products", JSON.stringify(myCartAdjust))
         }
     }
 }
