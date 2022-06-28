@@ -14,7 +14,7 @@ Your challenge :
 
 ### Screenshot
 
-![](.front/images/project.png)
+![](front/images/project.png)
 
 
 ### Links
