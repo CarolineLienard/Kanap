@@ -12,6 +12,11 @@ h2 {
 	text-align: start;
 }
 
+input:disabled:hover {
+	box-shadow: none !important;
+	cursor: not-allowed;
+}
+
 /************/
 /*Cart Items*/
 /************/

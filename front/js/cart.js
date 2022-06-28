@@ -149,6 +149,120 @@ function deleteProduct(id, color){
     location.reload()
 }
 
+// First name Regex  
+function validateFirstName () {
+  
+  let firstNameInput = document.getElementById("firstName")
+  let firstNameValidate = document.getElementById("firstName").value
+  let firstNameErrorMsg = document.getElementById("firstNameErrorMsg")
+  let order = document.getElementById("order")
+
+  const firstNameRGEX = /^[a-zA-Z ]+$/
+  let firstNameResult = firstNameRGEX.test(firstNameValidate)
+
+  if (firstNameResult == false ) {
+    firstNameInput.style.backgroundColor="red"
+    firstNameErrorMsg.innerHTML = "Votre prénom ne doit comporter que des lettres"
+    firstNameErrorMsg.style.display="inherit"
+    order.disabled = true
+  } else {
+    firstNameErrorMsg.style.display="none"
+    firstNameInput.style.backgroundColor="white"
+    order.disabled = false
+  }
+}
+
+// Last name Regex
+function validateLastName () {
+ 
+  let lastNameInput = document.getElementById("lastName")
+  let lastNameValidate = document.getElementById("lastName").value
+  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
+  let order = document.getElementById("order")
+
+  const lastNameRGEX = /^[a-zA-Z ]+$/
+  let lastNameResult = lastNameRGEX.test(lastNameValidate)
+
+  if (lastNameResult == false ) {
+    lastNameInput.style.backgroundColor="red"
+    lastNameErrorMsg.innerHTML = "Votre nom ne doit comporter que des lettres"
+    lastNameErrorMsg.style.display="inherit"
+    order.disabled = true
+  } else {
+    lastNameErrorMsg.style.display="none"
+    lastNameInput.style.backgroundColor="white"
+    order.disabled = false
+  }
+}
+
+// Address Regex
+function validateAddress () {
+
+  let addressInput = document.getElementById("address")
+  let addressValidate = document.getElementById("address").value
+  let addressErrorMsg = document.getElementById("addressErrorMsg")
+  let order = document.getElementById("order")
+
+  const addressRGEX = /^[a-zA-Z0-9\s\,\''\-]*$/
+  let addressResult = addressRGEX.test(addressValidate)
+
+  if (addressResult == false ) {
+    addressInput.style.backgroundColor="red"
+    addressErrorMsg.innerHTML = "Votre adresse ne doit pas comporter de caractères spéciaux"
+    addressErrorMsg.style.display="inherit"
+    order.disabled = true
+  } else {
+    addressErrorMsg.style.display="none"
+    addressInput.style.backgroundColor="white"
+    order.disabled = false
+  }
+}  
+
+// City Regex
+function validateCity () {
+  
+  let cityInput = document.getElementById("city")
+  let cityValidate = document.getElementById("city").value
+  let cityErrorMsg = document.getElementById("cityErrorMsg")
+  let order = document.getElementById("order")
+
+  const cityRGEX = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/
+
+  if (cityResult == false ) {
+    cityInput.style.backgroundColor="red"
+    cityErrorMsg.innerHTML = "Votre ville ne doit pas comporter que des lettres et certains caractères spéciaux"
+    cityErrorMsg.style.display="inherit"
+    order.disabled = true
+  } else {
+    cityInput.style.backgroundColor="green"
+    cityErrorMsg.style.display="none"
+    order.disabled = false
+  }
+}
+
+// Email Regex
+function validateEmail () {
+
+  let emailInput = document.getElementById("email")
+  let emailValidate = document.getElementById("email").value
+  let emailErrorMsg = document.getElementById("emailErrorMsg")
+  let order = document.getElementById("order")
+
+  const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+  let emailResult = emailRGEX.test(emailValidate)
+
+  if (emailResult == false ) {
+    emailInput.style.backgroundColor="red"
+    emailErrorMsg.innerHTML = "Exemple : kanap@gmail.com"
+    emailErrorMsg.style.display="inherit"
+    order.disabled = true
+  } else {
+    emailInput.style.backgroundColor="green"
+    emailErrorMsg.style.display="none"
+    order.disabled = false
+  }
+}
+
 // Send the form and place the order
 function sendForm () {
     const firstName = document.getElementById("firstName").value
