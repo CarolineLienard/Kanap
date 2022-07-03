@@ -149,7 +149,7 @@ function deleteProduct(id, color){
     location.reload()
 }
 
-// First name Regex  
+// First name Regex
 function validateFirstName () {
   
   let firstNameInput = document.getElementById("firstName")
@@ -165,10 +165,12 @@ function validateFirstName () {
     firstNameErrorMsg.innerHTML = "Votre prénom ne doit comporter que des lettres"
     firstNameErrorMsg.style.display="inherit"
     order.disabled = true
+    return false
   } else {
     firstNameErrorMsg.style.display="none"
     firstNameInput.style.backgroundColor="white"
     order.disabled = false
+    return true
   }
 }
 
@@ -178,7 +180,6 @@ function validateLastName () {
   let lastNameInput = document.getElementById("lastName")
   let lastNameValidate = document.getElementById("lastName").value
   let lastNameErrorMsg = document.getElementById("lastNameErrorMsg")
-  let order = document.getElementById("order")
 
   const lastNameRGEX = /^[a-zA-Z ]+$/
   let lastNameResult = lastNameRGEX.test(lastNameValidate)
@@ -187,11 +188,11 @@ function validateLastName () {
     lastNameInput.style.backgroundColor="red"
     lastNameErrorMsg.innerHTML = "Votre nom ne doit comporter que des lettres"
     lastNameErrorMsg.style.display="inherit"
-    order.disabled = true
+    return false
   } else {
     lastNameErrorMsg.style.display="none"
     lastNameInput.style.backgroundColor="white"
-    order.disabled = false
+    return true
   }
 }
 
@@ -201,7 +202,6 @@ function validateAddress () {
   let addressInput = document.getElementById("address")
   let addressValidate = document.getElementById("address").value
   let addressErrorMsg = document.getElementById("addressErrorMsg")
-  let order = document.getElementById("order")
 
   const addressRGEX = /^[a-zA-Z0-9\s\,\''\-]*$/
   let addressResult = addressRGEX.test(addressValidate)
@@ -210,11 +210,11 @@ function validateAddress () {
     addressInput.style.backgroundColor="red"
     addressErrorMsg.innerHTML = "Votre adresse ne doit pas comporter de caractères spéciaux"
     addressErrorMsg.style.display="inherit"
-    order.disabled = true
+    return false
   } else {
     addressErrorMsg.style.display="none"
     addressInput.style.backgroundColor="white"
-    order.disabled = false
+    return true
   }
 }  
 
@@ -224,19 +224,20 @@ function validateCity () {
   let cityInput = document.getElementById("city")
   let cityValidate = document.getElementById("city").value
   let cityErrorMsg = document.getElementById("cityErrorMsg")
-  let order = document.getElementById("order")
 
   const cityRGEX = /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/
+  let cityResult = cityRGEX.test(cityValidate)
+
 
   if (cityResult == false ) {
     cityInput.style.backgroundColor="red"
     cityErrorMsg.innerHTML = "Votre ville ne doit pas comporter que des lettres et certains caractères spéciaux"
     cityErrorMsg.style.display="inherit"
-    order.disabled = true
+    return false
   } else {
     cityInput.style.backgroundColor="green"
     cityErrorMsg.style.display="none"
-    order.disabled = false
+    return true
   }
 }
 
@@ -246,7 +247,6 @@ function validateEmail () {
   let emailInput = document.getElementById("email")
   let emailValidate = document.getElementById("email").value
   let emailErrorMsg = document.getElementById("emailErrorMsg")
-  let order = document.getElementById("order")
 
   const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
   let emailResult = emailRGEX.test(emailValidate)
@@ -255,13 +255,29 @@ function validateEmail () {
     emailInput.style.backgroundColor="red"
     emailErrorMsg.innerHTML = "Exemple : kanap@gmail.com"
     emailErrorMsg.style.display="inherit"
-    order.disabled = true
+    return false
   } else {
     emailInput.style.backgroundColor="green"
     emailErrorMsg.style.display="none"
-    order.disabled = false
+    return true
   }
 }
+
+//Call function on change
+let firstNameField = document.getElementById('firstName')
+firstNameField.addEventListener('change', validateFirstName)
+
+let lastNameField = document.getElementById('lastName')
+lastNameField.addEventListener('change', validateLastName)
+
+let cityField = document.getElementById('city')
+cityField.addEventListener('change', validateCity)
+
+let addressField = document.getElementById('address')
+addressField.addEventListener('change', validateAddress)
+
+let emailField = document.getElementById('email')
+emailField.addEventListener('change', validateEmail)
 
 // Send the form and place the order
 function sendForm () {
@@ -271,7 +287,9 @@ function sendForm () {
     const city = document.getElementById("city").value
     const email = document.getElementById("email").value
 
-    if(firstName !== '' && lastName !== '' && address !== '' && city !== '' && email !== ''){
+    const valideForm = validateEmail() && validateAddress() && validateCity() && validateFirstName() && validateLastName()
+
+    if(firstName !== '' && lastName !== '' && address !== '' && city !== '' && email !== '' && valideForm){
         fetch(`http://localhost:3000/api/products/order`, {
             method: 'POST',
             headers: {
@@ -307,5 +325,7 @@ function sendForm () {
             .catch((err) => {
                 alert (err.message)
             })
+    }else{
+      alert('Erreur dans le formulaire')
     }
 }
