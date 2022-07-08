@@ -1,7 +1,7 @@
 # Kanap
 # 🛒 Building an online shop with Javascript
 
-This is my solution to the 5th project of the Web developer OpenClassrooms course. It's mostly about using a local API.
+This is my solution to the 5th project of the Web developer OpenClassrooms course. In this challenge, you already have the HTML and CSS code. You need to create all the dynamical data with JS and a local API.
 
 ## Overview
 
@@ -15,29 +15,18 @@ Your challenge :
 ### Screenshot
 
 ![](front/images/project.png)
+![](front/images/project2.png)
 
 
 ### Links
 
 - Solution URL: (https://carolinelienard.github.io/Kanap/)
 
-## My process
-
 ### Built with
 
 - HTML5
-- CSS/SASS
+- CSS
 - Javascript
-
-### What I learned
-
-Second time using a local API. This challenge was great !
-
-
-### Useful resources
-
-- Javascript de zéro (https://www.youtube.com/watch?v=6q-zt0aQ74U&t=14034s&ab_channel=FromScratch-D%C3%A9veloppementWeb) - An amazing french tutorial for Javascript.
-
 
 ## Author
 
