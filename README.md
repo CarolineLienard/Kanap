@@ -17,11 +17,6 @@ Your challenge :
 ![](front/images/project.png)
 ![](front/images/project2.png)
 
-
-### Links
-
-- Solution URL: (https://carolinelienard.github.io/Kanap/)
-
 ### Built with
 
 - HTML5
@@ -31,6 +26,6 @@ Your challenge :
 ## Author
 
 - Caroline Lienard (https://github.com/CarolineLienard)
-- Frontend Mentor - (https://www.frontendmentor.io/challenges/expenses-chart-component-e7yJBUdjwt/hub/expenses-chart-component-Yb6C7NgV1a)
+- OpenClassrooms (https://openclassrooms.com/fr/) 
 
 #### Note: If you are student, do your best to create your own solution, you got this 👍🏻
